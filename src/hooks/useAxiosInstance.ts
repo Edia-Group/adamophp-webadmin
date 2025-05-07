@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { axiosPrivate } from '../services/api';
+import { AxiosInstance } from '../services/api';
 import { useAuth } from './useAuth';
 
-export const useAxiosPrivate = () => {
+export const useAxiosInstance = () => {
   const { token } = useAuth();
   
   useEffect(() => {
-    const requestIntercept = axiosPrivate.interceptors.request.use(
+    const requestIntercept = AxiosInstance.interceptors.request.use(
       (config) => {
         if (!config.headers['Authorization']) {
           config.headers['Authorization'] = `Bearer ${token}`;
@@ -17,9 +17,9 @@ export const useAxiosPrivate = () => {
     );
     
     return () => {
-      axiosPrivate.interceptors.request.eject(requestIntercept);
+      AxiosInstance.interceptors.request.eject(requestIntercept);
     };
   }, [token]);
   
-  return axiosPrivate;
+  return AxiosInstance;
 };

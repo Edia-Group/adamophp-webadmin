@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { getUsers } from '../../services/userService';
 import type { User } from '../../types/user.types';
 import UserItem from './UserItem';
-import { useAxiosPrivate } from '../../hooks/useAxiosPrivate';
+import { useAxiosInstance } from '../../hooks/useAxiosInstance';
 import { toast } from 'react-toastify';
 
 const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const axiosPrivate = useAxiosPrivate();
+  const AxiosInstance = useAxiosInstance();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -25,7 +25,7 @@ const UserList = () => {
     };
 
     fetchUsers();
-  }, [axiosPrivate]);
+  }, [AxiosInstance]);
 
   const filteredUsers = users.filter(user => 
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
