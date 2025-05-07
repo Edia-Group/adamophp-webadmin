@@ -1,24 +1,10 @@
-"use client"
-
 import { LogOut, Plus, Search, Settings, Users } from "lucide-react"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarRail,
-} from "../ui/sidebar"
 
 import { Avatar } from "../ui/avatar"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
+import { ScrollArea } from "../ui/scroll-area"
 import { useState } from "react"
 
 // Sample user data
@@ -89,8 +75,8 @@ export default function UserSidebar({ onSelectUser, selectedUser }: UserSidebarP
   }
 
   return (
-    <Sidebar>
-      <SidebarHeader>
+    <div className="flex flex-col h-full bg-white">
+      <div className="flex flex-col p-2 border-b">
         <div className="flex items-center justify-between p-2">
           <div className="flex items-center gap-2">
             <Users className="h-5 w-5" />
@@ -111,71 +97,69 @@ export default function UserSidebar({ onSelectUser, selectedUser }: UserSidebarP
             />
           </div>
         </div>
-      </SidebarHeader>
+      </div>
 
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Recent Chats</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {filteredUsers.map((user) => (
-                <SidebarMenuItem key={user.id}>
-                  <SidebarMenuButton asChild isActive={selectedUser === user.id} onClick={() => onSelectUser(user.id)}>
-                    <div className="flex items-center gap-3 w-full">
-                      <div className="relative">
-                        <Avatar className="h-10 w-10">
-                          <img
-                            src={user.avatar || "/placeholder.svg"}
-                            alt={user.name}
-                            className="h-full w-full object-cover"
-                          />
-                        </Avatar>
-                        <div
-                          className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background ${getStatusColor(user.status)}`}
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex justify-between items-center">
-                          <span className="font-medium truncate">{user.name}</span>
-                          {user.unread > 0 && (
-                            <Badge variant="default" className="ml-2 px-1.5 py-0.5 text-xs">
-                              {user.unread}
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-xs text-muted-foreground truncate">{user.lastMessage}</p>
-                      </div>
-                    </div>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <div className="flex items-center gap-2">
-                <Settings className="h-5 w-5" />
-                <span>Settings</span>
+      <ScrollArea className="flex-1 p-2">
+        <div className="space-y-1">
+          <div className="py-1 px-2 text-xs font-medium text-gray-500">Recent Chats</div>
+          {filteredUsers.map((user) => (
+            <button
+              key={user.id}
+              className={`flex items-center gap-3 w-full p-2 rounded-md transition-colors ${
+                selectedUser === user.id ? "bg-primary text-primary-foreground" : "hover:bg-gray-100"
+              }`}
+              onClick={() => onSelectUser(user.id)}
+            >
+              <div className="relative">
+                <Avatar className="h-10 w-10">
+                  <img
+                    src={user.avatar || "/placeholder.svg"}
+                    alt={user.name}
+                    className="h-full w-full object-cover"
+                  />
+                </Avatar>
+                <div
+                  className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${getStatusColor(
+                    user.status
+                  )}`}
+                />
               </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <div className="flex items-center gap-2">
-                <LogOut className="h-5 w-5" />
-                <span>Logout</span>
+              <div className="flex-1 min-w-0 text-left">
+                <div className="flex justify-between items-center">
+                  <span className={`font-medium truncate ${selectedUser === user.id ? "text-primary-foreground" : ""}`}>
+                    {user.name}
+                  </span>
+                  {user.unread > 0 && (
+                    <Badge variant={selectedUser === user.id ? "outline" : "default"} className="ml-2 px-1.5 py-0.5 text-xs">
+                      {user.unread}
+                    </Badge>
+                  )}
+                </div>
+                <p
+                  className={`text-xs truncate ${
+                    selectedUser === user.id ? "text-primary-foreground/80" : "text-gray-500"
+                  }`}
+                >
+                  {user.lastMessage}
+                </p>
               </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
+            </button>
+          ))}
+        </div>
+      </ScrollArea>
 
-      <SidebarRail />
-    </Sidebar>
+      <div className="p-2 border-t">
+        <div className="flex items-center justify-between">
+          <Button variant="ghost" size="sm" className="w-full flex items-center gap-2 justify-start">
+            <Settings className="h-4 w-4" />
+            <span>Settings</span>
+          </Button>
+          <Button variant="ghost" size="sm" className="w-full flex items-center gap-2 justify-start">
+            <LogOut className="h-4 w-4" />
+            <span>Logout</span>
+          </Button>
+        </div>
+      </div>
+    </div>
   )
 }

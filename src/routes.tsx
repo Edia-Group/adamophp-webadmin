@@ -32,7 +32,7 @@ const router = createBrowserRouter([
             element: <Users />
           },
          {
-            path: 'chat',
+            path: 'chats',
             element: <Chat />
         }
         ]

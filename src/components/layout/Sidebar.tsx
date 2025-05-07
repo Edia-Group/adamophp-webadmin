@@ -19,51 +19,42 @@ export function Sidebar({ isOpen, onClose, isMobile = false }: SidebarProps) {
   const navigation = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Users", href: "/users", icon: Users },
-    { name: "Chats", href: "/chats", icon: MessageSquare, disabled: true },
+    { name: "Chat", href: "/chats", icon: MessageSquare },
   ];
 
   const sidebarContent = (
     <div className="flex h-full flex-col bg-primary text-primary-foreground">
-      <div className="flex-1">
-        <div className="flex h-16 items-center px-4 border-b border-primary-foreground/10">
-          <h1 className="text-xl font-bold">Admin Chat</h1>
-        </div>
-        <nav className="space-y-1 px-2 py-4">
-          {navigation.map((item) => (
-            <NavLink
-              key={item.name}
-              to={item.disabled ? "#" : item.href}
-              onClick={(e) => {
-                if (item.disabled) {
-                  e.preventDefault();
-                } else if (isMobile && onClose) {
-                  onClose();
-                }
-              }}
-              className={({ isActive }) =>
-                cn(
-                  "group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
-                  isActive && !item.disabled
-                    ? "bg-primary-foreground text-primary"
-                    : "text-primary-foreground hover:bg-primary-foreground/10",
-                  item.disabled && "opacity-50 cursor-not-allowed"
-                )
-              }
-            >
-              <item.icon
-                className="mr-3 h-5 w-5 flex-shrink-0"
-                aria-hidden="true"
-              />
-              {item.name}
-              {item.disabled && (
-                <span className="ml-2 text-xs bg-primary-foreground/20 px-2 py-0.5 rounded text-primary-foreground">
-                  Soon
-                </span>
-              )}
-            </NavLink>
-          ))}
-        </nav>
+      <div className="flex h-16 items-center px-4 border-b border-primary-foreground/10">
+        <h1 className="text-xl font-bold">Admin Chat</h1>
       </div>
+      <nav className="space-y-1 px-2 py-4">
+        {navigation.map((item) => (
+          <NavLink
+            key={item.name}
+            to={item.href}
+            onClick={(e) => {
+              if (isMobile && onClose) {
+                onClose();
+              }
+            }}
+            className={({ isActive }) =>
+              cn(
+                "group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                isActive 
+                  ? "bg-primary-foreground text-primary"
+                  : "text-primary-foreground hover:bg-primary-foreground/10"
+              )
+            }
+          >
+            <item.icon
+              className="mr-3 h-5 w-5 flex-shrink-0"
+              aria-hidden="true"
+            />
+            {item.name}
+          </NavLink>
+        ))}
+      </nav>
+      <div className="flex-1"></div>
       <div className="p-4 border-t border-primary-foreground/10">
         {user && (
           <div className="text-sm mb-3 font-medium">

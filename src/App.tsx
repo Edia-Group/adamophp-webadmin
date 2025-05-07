@@ -36,7 +36,7 @@ function AppContent() {
 
       <div className={isAuthenticated ? "lg:pl-72" : ""}>
         {isAuthenticated && (
-          <Header setSidebarOpen={() => setSidebarOpen(true)} />
+          <Header setSidebarOpen={() => setSidebarOpen(!sidebarOpen)} sidebarOpen={false} />
         )}
         <main className="py-10">
           <div className="px-4 sm:px-6 lg:px-8">

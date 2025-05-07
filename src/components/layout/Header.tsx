@@ -4,10 +4,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLocation } from 'react-router-dom';
 
 interface HeaderProps {
-  setSidebarOpen: () => void;
+  setSidebarOpen: (value: boolean) => void;
+  sidebarOpen: boolean;
 }
 
-const Header = ({ setSidebarOpen }: HeaderProps) => {
+const Header = ({ setSidebarOpen, sidebarOpen }: HeaderProps) => {
   const { user } = useAuth();
   const location = useLocation();
   
@@ -15,7 +16,7 @@ const Header = ({ setSidebarOpen }: HeaderProps) => {
     const path = location.pathname;
     if (path.includes('/dashboard')) return 'Dashboard';
     if (path.includes('/users')) return 'Users';
-    if (path.includes('/chat/')) return 'Chat';
+    if (path.includes('/chats/')) return 'Chat';
     return 'Admin Chat';
   };
 
@@ -27,9 +28,9 @@ const Header = ({ setSidebarOpen }: HeaderProps) => {
             variant="ghost"
             size="icon"
             className="lg:hidden mr-2"
-            onClick={setSidebarOpen}
+            onClick={() => setSidebarOpen(!sidebarOpen)}
           >
-            <span className="sr-only">Open sidebar</span>
+            <span className="sr-only">Toggle sidebar</span>
             <Menu className="h-6 w-6" aria-hidden="true" />
           </Button>
           <div className="lg:flex lg:items-center lg:justify-between">
