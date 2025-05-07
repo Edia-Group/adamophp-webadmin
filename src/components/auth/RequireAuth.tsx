@@ -1,4 +1,5 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
+
 import { useAuth } from '../../hooks/useAuth';
 
 const RequireAuth = () => {
@@ -9,7 +10,7 @@ const RequireAuth = () => {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
 
-  return isAuthenticated 
+  return isAuthenticated == false 
     ? <Outlet /> 
     : <Navigate to="/login" state={{ from: location }} replace />;
 };

@@ -1,6 +1,3 @@
-import React, { createContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
 import type {
     AuthContextType,
     AuthState,
@@ -8,8 +5,12 @@ import type {
     LoginCredentials,
     User
 } from '../types/auth.types';
+import React, { createContext, useEffect, useState } from 'react';
 import { getTokenFromStorage, removeTokenFromStorage, setTokenToStorage } from '../lib/utils';
+
+import { jwtDecode } from 'jwt-decode';
 import { login as loginApi } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
 
 const initialState: AuthState = {
   user: null,
@@ -28,7 +29,7 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [state, setState] = useState<AuthState>(initialState);
   const navigate = useNavigate();
 
@@ -90,7 +91,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await loginApi(credentials);
       const { user, token } = response;
       
-      setTokenFromStorage(token);
+      setTokenToStorage(token);
       
       setState({
         user,
@@ -118,15 +119,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     navigate('/login');
   };
 
-  return (
-    <AuthContext.Provider
-      value={{
-        ...state,
-        login,
-        logout,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const contextValue = {
+    ...state,
+    login,
+    logout,
+  };
+
+  return React.createElement(
+    AuthContext.Provider,
+    { value: contextValue },
+    children
   );
-};
+}

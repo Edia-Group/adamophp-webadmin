@@ -1,10 +1,11 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
+
 import App from './App';
-import Login from './pages/Login';
+import Chat from './pages/Chat.tsx';
 import Dashboard from './pages/Dashboard';
-import Users from './pages/Users';
-//import Chat from './pages/Chat';
+import Login from './pages/Login';
 import RequireAuth from './components/auth/RequireAuth';
+import Users from './pages/Users';
 
 const router = createBrowserRouter([
   {
@@ -30,10 +31,10 @@ const router = createBrowserRouter([
             path: 'users',
             element: <Users />
           },
-        //   {
-        //     path: 'chat/:userId',
-        //     element: <Chat />
-        //   }
+         {
+            path: 'chat',
+            element: <Chat />
+        }
         ]
       }
     ]

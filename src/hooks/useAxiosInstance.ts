@@ -1,25 +1,25 @@
-import { useEffect } from 'react';
-import { AxiosInstance } from '../services/api';
+import { axiosInstance } from '../services/api';
 import { useAuth } from './useAuth';
+import { useEffect } from 'react';
 
 export const useAxiosInstance = () => {
   const { token } = useAuth();
   
   useEffect(() => {
-    const requestIntercept = AxiosInstance.interceptors.request.use(
-      (config) => {
+    const requestIntercept = axiosInstance.interceptors.request.use(
+      (config: any) => {
         if (!config.headers['Authorization']) {
           config.headers['Authorization'] = `Bearer ${token}`;
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error: any) => Promise.reject(error)
     );
     
     return () => {
-      AxiosInstance.interceptors.request.eject(requestIntercept);
+      axiosInstance.interceptors.request.eject(requestIntercept);
     };
   }, [token]);
   
-  return AxiosInstance;
+  return axiosInstance;
 };
